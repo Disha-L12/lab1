@@ -1,38 +1,38 @@
-pipeline{
-  agent any
-  tools{
-  maven 'Maven'
-  }
-  
-  stages{
-  stage('Checkout'){
-  steps{
-    git branch:'master,url:'https://github.com/Disha-L12/lab1.git'
-    }
-  }
-  stage('Build'){
-  steps{
-    sh 'mvn clean package'
-    }
-    }
-  stage("test"){
-  steps{
-    sh 'mvn test'
-    }
-    }
-    
- stage("run application"){
- steps{
-   sh 'java -jar target/lab1-1.0-SNAPSHOT.jar'
-   }
-   }
+pipeline {
+ agent any // Use any available agent
+ tools {
+ maven 'Maven' // Ensure this matches the name configured in Jenkins
  }
- post{
- success{
- echo "success"
+ stages {
+ stage('Checkout') {
+ steps {
+ git branch: 'master', url: 'https://github.com/Disha-L12/lab1.git'
  }
- failure{
- echo "failed"
+ }
+ stage('Build') {
+ steps {
+ sh 'mvn clean package' // Run Maven build
+ }
+ }
+ stage('Test') {
+ steps {
+ sh 'mvn test' // Run unit tests
+ }
+ }
+
+ stage('Run Application') {
+ steps {
+ // Start the JAR application
+ sh 'java -jar target/MyMavenApp-1.0-SNAPSHOT.jar'
  }
  }
  }
+ post {
+ success {
+ echo 'Build and deployment successful!'
+ }
+ failure {
+ echo 'Build failed!'
+ }
+ }
+}
